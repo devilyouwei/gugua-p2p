@@ -1,0 +1,65 @@
+{
+  "name": "typescript-template",
+  "version": "0.0.1",
+  "description": "an example for typescript node project, with prettier",
+  "author": "devil",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "tsc"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint",
+      "prettier"
+    ],
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "warn",
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "prettier": {
+    "useTabs": false,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "jsxBracketSameLine": true,
+    "printWidth": 120,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid",
+    "htmlWhitespaceSensitivity": "ignore",
+    "proseWrap": "always"
+  },
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "md5": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.35",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "supervisor": "^0.12.0",
+    "typescript": "^4.2.3"
+  },
+  "license": "MIT"
+}

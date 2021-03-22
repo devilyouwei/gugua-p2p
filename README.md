@@ -2,7 +2,18 @@
 
 ![logo](./logo.jpg)
 
-GuGua Diary 是一种基于区块链技术的好友或情侣间的公开或非公开的日记本，简称 gugua
+GuGua Network a decentralized social network just like Twitter, based on blockchain.
+
+## My BlockChain Journey
+
+This section record something about my studying blockchain, I will used TypeScript to develop GuGua.
+
+Day 1: I set up the node and TypeScript environment.
+
+Day 2: I tested a simple blockchain example: block and chain.
+
+_From now on..., I will also put this section in blockchain to record my daily work on this project, refer to
+test/record.ts._
 
 ## Basic Requirements
 
