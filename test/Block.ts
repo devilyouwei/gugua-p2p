@@ -5,11 +5,11 @@ class Block {
     time: number
     hash: string
     pHash: string
-    constructor(user: string, msg: string, hash: string) {
+    constructor(user: string, msg: string, hash: string, time = new Date().getTime()) {
         this.user = user
         this.msg = msg
         this.pHash = hash
-        this.time = new Date().getTime()
+        this.time = time
         this.hash = md5(this.pHash + this.msg + this.time.toString())
     }
     check() {

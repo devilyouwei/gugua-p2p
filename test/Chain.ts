@@ -3,7 +3,7 @@ class Chain {
     block: Block[] = []
     constructor(block: Block[] = []) {
         // transform json object to Block object
-        for (const item of block) this.add(item.user, item.msg)
+        for (const item of block) this.add(item.user, item.msg, item.time)
     }
     check() {
         let i = 0
@@ -20,8 +20,8 @@ class Chain {
         }
         return true
     }
-    add(user: string, msg: string) {
-        const post = new Block(user, msg, this.block[this.block.length - 1]?.hash || 'first block')
+    add(user: string, msg: string, time: number = new Date().getTime()) {
+        const post = new Block(user, msg, this.block[this.block.length - 1]?.hash || 'first block', time)
         this.block.push(post)
     }
     get(i: number) {
