@@ -4,21 +4,23 @@ import fs from 'fs'
 import root from 'app-root-path'
 import { Network } from './Data'
 import through from 'through2'
-const stream = through(write, end)
 //a p2p server list
 const json = `${root}/test/p2p.json`
+const PORT = 6666
+
 function write(line, _, next) {
-    console.log(line.toString())
-    setIp(JSON.parse(line.toString()))
+    // write ip list to local file
+    const obj = $.parse(line.toString())
+    if (typeof obj == 'object') setIp(obj)
+    else this.push(line)
     next()
 }
-function end(done) {
-    done()
-}
+const stream = through(write)
 
-function getIp() {
+function getIp(my: Network) {
     const p2p = fs.readFileSync(json, 'utf-8')
     const list: any = JSON.parse(p2p)
+    list[my.ip] = PORT
     const arr = []
     for (const i in list) {
         arr.push({
@@ -28,19 +30,20 @@ function getIp() {
     }
     return arr
 }
-function setIp(list: any[]) {
+function setIp(list: any) {
+    if (!list.length) return
     const hash = {}
     for (const item of list) {
-        hash[item] = item.port
+        hash[item.address] = item.port
     }
-    const ipText = JSON.stringify(hash)
-    fs.writeFileSync(json, JSON.stringify(hash))
+    const ipText = $.stringify(hash)
+    fs.writeFileSync(json, ipText)
 }
 ;(async () => {
-    const PORT = 6666
     const network: Network = (await $.network()) as Network
 
-    const list = getIp()
+    const list = getIp(network)
+    console.log(list)
     // get user network
     const node = smoke.createNode({
         port: PORT,
@@ -56,19 +59,19 @@ function setIp(list: any[]) {
 
     node.on('connect', () => {
         console.log('connected')
+        console.log('Now start to type:')
         node.broadcast.write(JSON.stringify(list))
     })
+
+    process.stdin.pipe(node.broadcast).pipe(stream).pipe(process.stdout)
 
     node.on('disconnect', () => {
         console.log('disconnect')
     })
 
-    // Send message
-    process.stdin.pipe(node.broadcast).pipe(stream)
-
     node.on('error', e => {
         console.error(e)
     })
-    node.broadcast
+
     node.start()
 })()

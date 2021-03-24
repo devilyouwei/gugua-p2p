@@ -2,7 +2,7 @@ import network from 'network'
 import { Network } from './test/Data'
 
 export default {
-    network() {
+    network(): Promise<Network> {
         return new Promise((resolve, reject) => {
             network.get_interfaces_list((err: Error, list: any[]) => {
                 if (err) reject(err)
@@ -18,5 +18,19 @@ export default {
                 resolve(network)
             })
         })
+    },
+    parse(json: string): any {
+        try {
+            return JSON.parse(json)
+        } catch (e) {
+            return json
+        }
+    },
+    stringify(json: any): string {
+        try {
+            return JSON.stringify(json)
+        } catch (e) {
+            return ''
+        }
     }
 }
