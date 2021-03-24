@@ -6,3 +6,7 @@ export interface Network {
     readonly netmask: string
     readonly type: string
 }
+export interface Seed {
+    readonly address: string
+    readonly port: number
+}

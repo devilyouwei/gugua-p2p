@@ -2,7 +2,7 @@ import smoke from 'smokesignal'
 import $ from '../Util'
 import fs from 'fs'
 import root from 'app-root-path'
-import { Network, Seed } from './Data'
+import { Network } from './Data'
 import through from 'through2'
 
 //a p2p server list
@@ -20,10 +20,10 @@ function write(line, _, next) {
     next()
 }
 // get ip list and transform to smoke signal required data struct
-function getIp(my: Network): Seed[] {
+function getIp(my: Network) {
     const list = $.parse(fs.readFileSync(json, 'utf-8')) as Map<string, number>
     list[my.ip] = PORT
-    const arr: Seed[] = []
+    const arr = []
     for (const i in list) {
         arr.push({
             address: i,
@@ -33,7 +33,7 @@ function getIp(my: Network): Seed[] {
     return arr
 }
 // save ip list to local file, cover
-function setIp(list: Seed[]) {
+function setIp(list: any) {
     if (!list.length) return
     const hash = $.parse(fs.readFileSync(json, 'utf-8')) as Map<string, number>
     for (const item of list) hash[item.address] = item.port
