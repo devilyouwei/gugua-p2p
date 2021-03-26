@@ -8,7 +8,6 @@
         "sourceMap": false,
         "rootDir": "./",
         "outDir": "./dist",
-        "esModuleInterop": true,
-        "watch": true
+        "esModuleInterop": true
     }
 }

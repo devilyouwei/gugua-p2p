@@ -5,7 +5,8 @@
   "author": "devil",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "tsc"
+    "dev": "tsc -w & supervisor ./",
+    "build": "tsc"
   },
   "eslintConfig": {
     "root": true,
@@ -48,13 +49,21 @@
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
+    "libp2p": "^0.30.11",
+    "libp2p-noise": "^2.0.5",
+    "libp2p-tcp": "^0.15.3",
     "md5": "^2.3.0",
+    "nedb": "^1.8.0",
     "network": "^0.5.0",
     "smokesignal": "^0.2.2",
-    "through2": "^4.0.2"
+    "through2": "^4.0.2",
+    "ts-node": "^9.1.1"
   },
   "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
+    "@types/nedb": "^1.8.11",
     "@types/node": "^14.14.35",
+    "@types/through2": "^2.0.36",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "eslint": "^7.22.0",
