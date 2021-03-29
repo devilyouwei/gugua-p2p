@@ -3,35 +3,33 @@ import $ from './Util'
 import { Seed, Status, Msg } from './test/Data'
 import md5 from 'md5'
 import rd from 'readline'
-const PORT = 6666
+const PORT = 3333
 
 async function main() {
     const network = await $.network()
-    const node = await new P2P(network, PORT).startServer()
-    node.checkServer()
+    const node2 = await new P2P(network, PORT).startServer()
     // add my current seed to database
     const mySeed: Seed = { address: network.ip, port: PORT, token: md5(network.ip + PORT) }
-    await node.setSeed([mySeed])
+    await node2.setSeed([mySeed])
     console.log('Connecting...')
-    node.onConnect(async () => {
+    node2.onConnect(async () => {
         console.log('Connected!')
-        const nodes = await node.getSeed() // sync node list to other server
-        node.broadcast($.stringify({ status: Status.NODE, msg: Msg.NODE, data: nodes }))
+        const nodes = await node2.getSeed() // sync node list to other server
+        node2.broadcast($.stringify({ status: Status.NODE, msg: Msg.NODE, data: nodes }))
     })
-    node.onDisconnect(() => {
+    node2.onDisconnect(() => {
         console.log('Disconnected!')
     })
-    node.onMessage((msg: string) => {
-        const json = $.json(msg)
-        if (json.status === Status.NODE) node.setSeed(json.data as Seed[])
+    node2.onMessage((msg: string) => {
         console.log(msg)
+        const json = $.json(msg)
+        if (json.status === Status.NODE) node2.setSeed(json.data as Seed[])
     })
 
-    // test send message from console
     const rl = rd.createInterface(process.stdin)
     rl.on('line', line => {
         const json = { status: Status.NODE, msg: line.toString(), data: [] }
-        node.broadcast($.stringify(json))
+        node2.broadcast($.stringify(json))
     })
 }
 main()

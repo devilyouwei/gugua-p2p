@@ -1,5 +1,5 @@
 import network from 'network'
-import { Network } from './test/Data'
+import { Message, Network, Status, Msg } from './test/Data'
 
 export default {
     network(): Promise<Network> {
@@ -33,4 +33,12 @@ export default {
             return ''
         }
     },
+    // Messages exchanged in the P2P network need to use this to parse
+    json(json: string): Message {
+        try {
+            return JSON.parse(json) as Message
+        } catch (e) {
+            return { status: Status.ERROR, msg: Msg.ERROR, data: null }
+        }
+    }
 }
