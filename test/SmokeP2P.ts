@@ -17,6 +17,7 @@ export default class SmokeP2P {
         for (const item of list) await this.db.updateInsert({ address: item.address }, item)
     }
     async getSeed(): Promise<Seed[]> {
-
+        const data = await this.db.find() // find all the seeds
+        return data
     }
 }
