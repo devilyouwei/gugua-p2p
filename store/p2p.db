@@ -1,6 +1,11 @@
+{"address":"192.168.2.149","port":6666,"token":"053515f1943771ee4be0de452d427e8c","_id":"2wqAenZHPlmJM0DB"}
 {"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
 {"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}
 {"$$indexCreated":{"fieldName":"token","unique":true,"sparse":false}}
 {"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
+{"address":"192.168.2.149","port":6666,"token":"053515f1943771ee4be0de452d427e8c","_id":"2wqAenZHPlmJM0DB"}
+{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
+{"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}
+{"address":"192.168.2.213","port":6666,"token":"20d77732d4dd340d5e71c32c998e7c78","_id":"G9jo8BUMS4KkwAoN"}
 {"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
 {"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}

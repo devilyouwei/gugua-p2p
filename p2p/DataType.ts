@@ -19,6 +19,7 @@ export interface Message {
     readonly msg: string
     readonly data: object
 }
+// 这里可以直接规范一个方法
 export interface MessageCallback {
     (msg: string): void
 }
