@@ -1,6 +1,6 @@
-import P2P from './test/SmokeP2P'
+import P2P from './p2p/SmokeP2P'
 import $ from './Util'
-import { Seed, Status, Msg } from './test/Data'
+import { Seed, Status, Msg } from './p2p/DataType'
 import md5 from 'md5'
 import rd from 'readline'
 const PORT = 3333

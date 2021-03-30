@@ -1,18 +1,22 @@
-import smoke from 'smokesignal'
+/*
+ * Author: devilyouwei
+ * Time: 2021-3
+ * This is a test for smokesignal as the P2P plugin
+ */
+import smoke from 'smokesignal' // smokesignal is too simple
 import root from 'app-root-path'
-import { Network, Seed } from './Data'
+import { Network, Seed, MessageCallback } from './DataType'
+import { config } from './p2p.config'
 import DB from '../DB'
 import through2 from 'through2'
-const PORT = 6666
-const FILE = `${root}/store/p2p.db`
 
 export default class SmokeP2P {
     private db: DB
     private node: any
     private network: Network
     private port: number
-    constructor(network: Network, port: number = PORT) {
-        this.db = new DB(FILE)
+    constructor(network: Network, port: number = config.PORT) {
+        this.db = new DB(`${root}/store/${config.DB}`)
         this.network = network
         this.port = port
     }
@@ -41,11 +45,12 @@ export default class SmokeP2P {
     }
     // check server infomation
     // must be executed after start server, return the node
-    checkServer(): any {
+    checkServer(): boolean {
+        if (!this.node) return false
         console.log('Port:', this.node?.options.port)
         console.log('IP:', this.node?.options.address)
         console.log('ID:', this.node?.id)
-        return this.node
+        return true
     }
     // upon connected, it triggers
     onConnect(callback: Function): void {
@@ -64,7 +69,7 @@ export default class SmokeP2P {
         this.node?.broadcast.write(msg)
     }
     // on message arrives
-    onMessage(callback: Function): void {
+    onMessage(callback: MessageCallback): void {
         this.node?.broadcast.pipe(
             through2((line, _, next) => {
                 callback(line.toString())

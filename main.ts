@@ -1,6 +1,6 @@
-import P2P from './test/SmokeP2P'
+import P2P from './p2p/SmokeP2P'
 import $ from './Util'
-import { Seed, Status, Msg } from './test/Data'
+import { Seed, Status, Msg } from './p2p/DataType'
 import md5 from 'md5'
 import rd from 'readline'
 const PORT = 6666
@@ -16,6 +16,7 @@ async function main() {
     node.onConnect(async () => {
         console.log('Connected!')
         const nodes = await node.getSeed() // sync node list to other server
+        // broadcast seeds list
         node.broadcast($.stringify({ status: Status.NODE, msg: Msg.NODE, data: nodes }))
     })
     node.onDisconnect(() => {

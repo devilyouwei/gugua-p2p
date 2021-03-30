@@ -1,6 +1,6 @@
 {"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
 {"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}
 {"$$indexCreated":{"fieldName":"token","unique":true,"sparse":false}}
-{"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}
+{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
 {"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","_id":"meROWrHdCU0xt1XH"}
 {"address":"192.168.2.150","port":3333,"token":"760c0973a13358dc8b9351b000986cdd","_id":"uQ4fitmDfrVP6Vbq"}

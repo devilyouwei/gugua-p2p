@@ -1,29 +1,33 @@
 import network from 'network'
-import { Message, Network, Status, Msg } from './test/Data'
+import { Message, Network, Status, Msg } from './p2p/DataType'
 
 export default {
     network(): Promise<Network> {
         return new Promise((resolve, reject) => {
             network.get_interfaces_list((err: Error, list: any[]) => {
                 if (err) reject(err)
-                if (!list.length) reject('network error')
-                const network: Network = {
-                    name: list[0].name || '',
-                    ip: list[0].ip_address || '',
-                    mac: list[0].mac_address || '',
-                    gateway: list[0].gateway_ip || '',
-                    netmask: list[0].netmask || '',
-                    type: list[0].type || ''
+                if (!list.length) reject('Network Error')
+                for (const item of list) {
+                    if (item.name && item.ip_address && item.netmask) {
+                        const network: Network = {
+                            name: item.name,
+                            ip: item.ip_address,
+                            mac: item.mac_address,
+                            gateway: item.gateway_ip,
+                            netmask: item.netmask,
+                            type: item.type
+                        }
+                        resolve(network)
+                    }
                 }
-                resolve(network)
             })
         })
     },
-    parse(json: string): any {
+    parse(json: string): object {
         try {
             return JSON.parse(json)
         } catch (e) {
-            return json
+            return {}
         }
     },
     stringify(json: any): string {
