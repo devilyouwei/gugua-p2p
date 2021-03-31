@@ -1,7 +1,2 @@
-{"address":"192.168.2.149","port":6666,"token":"053515f1943771ee4be0de452d427e8c","time":1617186511111,"_id":"Gz1ZaeyY0ApcX070"}
-{"address":"192.168.2.213","port":6666,"token":"20d77732d4dd340d5e71c32c998e7c78","time":1617186589612,"_id":"L9s37zPY2bMVpkRW"}
-{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617186591591,"_id":"mEVuAEWhvXVqkIq9"}
 {"$$indexCreated":{"fieldName":"token","unique":true,"sparse":true}}
-{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617186604991,"_id":"mEVuAEWhvXVqkIq9"}
-{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617186605004,"_id":"mEVuAEWhvXVqkIq9"}
-{"address":"192.168.2.213","port":6666,"token":"20d77732d4dd340d5e71c32c998e7c78","time":1617186607614,"_id":"L9s37zPY2bMVpkRW"}
+{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617186668355,"_id":"8ER4kNskImFqbiRy"}
