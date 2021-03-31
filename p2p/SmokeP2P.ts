@@ -35,24 +35,20 @@ export default class SmokeP2P {
         return await this.db.find(obj) // find all the seeds
     }
     // broadcast my heart beat to check alive in the p2p network
-    private heartRate(time: number) {
-        this.heart = setInterval(async () => {
-            // get my seed info
-            const mySeed: Seed = {
-                address: this.network.ip,
-                port: this.port,
-                token: md5(this.network.ip + this.port),
-                time: new Date().getTime()
-            }
-            this.setSeed([mySeed]) // update my seed in database
-            const msg: Message = { status: Status.HEART, msg: Msg.HEART, data: [mySeed] }
-            // broadcast my node network to the p2p network
-            this.broadcast($.msgStringify(msg))
-            const seeds = await this.getSeed()
-            let str = ''
-            for (const item of seeds) str += item.address + ','
-            console.log('online: ' + str)
-        }, time)
+    heartRate(interval = 0) {
+        // get my seed info
+        const mySeed: Seed = {
+            address: this.network.ip,
+            port: this.port,
+            token: md5(this.network.ip + this.port),
+            time: new Date().getTime()
+        }
+        // update my seed in database
+        this.setSeed([mySeed])
+        const msg: Message = { status: Status.HEART, msg: Msg.HEART, data: [mySeed] }
+        // heart beat to broadcast my ip
+        if (interval) this.heart = setInterval(() => this.broadcast($.msgStringify(msg)), interval)
+        else this.broadcast($.msgStringify(msg))
     }
     // start as a p2p server, return the node
     async startServer(seeds: Seed[] = []): Promise<SmokeP2P> {
@@ -63,10 +59,10 @@ export default class SmokeP2P {
             address: smoke.localIp(`${this.network?.ip}/${this.network?.netmask}`),
             seeds: seeds
         })
-        // start heart beat
-        this.heartRate(config.HEART)
         // really start server
         this.node?.start()
+        // start heart beat
+        this.heartRate(config.HEART)
         return this
     }
     // check server infomation
@@ -102,8 +98,10 @@ export default class SmokeP2P {
                 const msg = line.toString()
                 const json: Message = $.msgParse(msg)
                 // Dont callback heart beat message
-                if (json.status === Status.HEART) this.setSeed(json.data as Seed[]), console.log('auto sync node')
-                else callback(json)
+                if (json.status === Status.HEART) {
+                    this.setSeed(json.data as Seed[])
+                    console.log('Sync Node', `${json.data[0].address}:${json.data[0].port}`)
+                } else callback(json)
                 next(null, line)
             })
         )

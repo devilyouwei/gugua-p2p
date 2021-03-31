@@ -1,2 +1,2 @@
-{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617178664126,"_id":"cjbL5TfnUC4oMC78"}
-{"$$indexCreated":{"fieldName":"token","unique":true,"sparse":false}}
+{"$$indexCreated":{"fieldName":"token","unique":true,"sparse":true}}
+{"address":"192.168.2.150","port":6666,"token":"2987ae9d936ed18433cbcbac6b58ecb8","time":1617186234003,"_id":"mEVuAEWhvXVqkIq9"}

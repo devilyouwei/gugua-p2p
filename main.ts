@@ -9,7 +9,11 @@ async function main() {
     const node = await new P2P(network, PORT).startServer()
     node.checkServer()
     console.log('Connecting...')
-    node.onConnect(() => console.log('Connected!'))
+    node.onConnect(() => {
+        console.log('Connected!')
+        // broadcast heartRate once upon connected
+        node.heartRate()
+    })
     node.onDisconnect(() => console.log('Disconnected!'))
     node.onMessage((msg: Message) => {
         console.log(msg.data)
