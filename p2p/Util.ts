@@ -1,5 +1,5 @@
 import network from 'network'
-import { Message, Network, Status, Msg } from './p2p/DataType'
+import { Message, Network, Status, Msg } from './DataType'
 
 export default {
     network(): Promise<Network> {
@@ -23,26 +23,20 @@ export default {
             })
         })
     },
-    parse(json: string): object {
+    // parse message
+    msgParse(msg: string): Message {
         try {
-            return JSON.parse(json)
-        } catch (e) {
-            return {}
-        }
-    },
-    stringify(json: any): string {
-        try {
-            return JSON.stringify(json)
-        } catch (e) {
-            return ''
-        }
-    },
-    // Messages exchanged in the P2P network need to use this to parse
-    json(json: string): Message {
-        try {
-            return JSON.parse(json) as Message
+            return JSON.parse(msg) as Message
         } catch (e) {
             return { status: Status.ERROR, msg: Msg.ERROR, data: null }
+        }
+    },
+    // message to string
+    msgStringify(msg: Message): string {
+        try {
+            return JSON.stringify(msg)
+        } catch (e) {
+            return `{ status: ${Status.ERROR}, msg: ${Msg.ERROR}, data: ${null} }`
         }
     }
 }

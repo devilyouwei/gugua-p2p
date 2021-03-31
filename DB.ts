@@ -18,7 +18,7 @@ export default class DB {
     // set an index(unique) key for document
     unique(field: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.db.ensureIndex({ fieldName: field, unique: true }, err => {
+            this.db.ensureIndex({ fieldName: field, unique: true, sparse: true }, err => {
                 if (err) return reject(err)
                 resolve()
             })

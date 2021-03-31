@@ -12,6 +12,7 @@ export interface Seed {
     readonly address: string
     readonly port: number
     readonly token: string
+    readonly time: number
 }
 // The standard data structure to exchange message between the P2P nodes
 export interface Message {
@@ -21,17 +22,17 @@ export interface Message {
 }
 // 这里可以直接规范一个方法
 export interface MessageCallback {
-    (msg: string): void
+    (msg: Message): void
 }
 // The standard status enums for Message interface
 export enum Status {
     ERROR = 0,
-    NODE = 1,
+    HEART = 1,
     MSG = 2
 }
 // The standard msg enums for Message interface
 export enum Msg {
     ERROR = 'Something is Error',
-    NODE = 'Sync Node List',
+    HEART = 'Heart Beat Alive',
     MSG = 'Messages'
 }
