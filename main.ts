@@ -22,7 +22,7 @@ async function main() {
     // test send message from console
     const rl = rd.createInterface(process.stdin)
     rl.on('line', line => {
-        const json = { status: Status.MSG, msg: Msg.MSG, data: { content: line.toString() } }
+        const json = { status: Status.MSG, msg: Msg.MSG, data: { content: line.toString(), from: network.ip } }
         node.broadcast($.msgStringify(json))
     })
 }
