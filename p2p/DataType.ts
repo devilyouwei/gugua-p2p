@@ -1,3 +1,4 @@
+// Specify data types for P2P
 // Network data structure
 export interface Network {
     readonly name: string
@@ -13,6 +14,13 @@ export interface Seed {
     readonly port: number
     readonly token: string
     readonly time: number
+}
+export interface Peer {
+    readonly id: string
+    readonly address: string
+    readonly token: string
+    time: number
+    alive: number
 }
 // The standard data structure to exchange message between the P2P nodes
 export interface Message {

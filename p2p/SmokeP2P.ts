@@ -84,8 +84,8 @@ export default class SmokeP2P {
     }
     // close p2p server
     closeServer(): void {
-        this.node?.close()
         clearInterval(this.heart)
+        this.node?.stop()
     }
     // broadcast a message
     broadcast(msg: string): void {

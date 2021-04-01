@@ -9,16 +9,24 @@ export default class DB {
     find(obj: object = {}): Promise<any> {
         return new Promise((resolve, reject) => {
             // Find all documents in the collection
-            this.db.find(obj, function (err, docs) {
+            this.db.find(obj, (err: Error, docs: object) => {
                 if (err) return reject(err)
                 resolve(docs)
+            })
+        })
+    }
+    remove(field: object, multi = true): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.db.remove(field, { multi: multi }, (err, numRemoved) => {
+                if (err) return reject(err)
+                resolve(numRemoved)
             })
         })
     }
     // set an index(unique) key for document
     unique(field: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.db.ensureIndex({ fieldName: field, unique: true, sparse: true }, err => {
+            this.db.ensureIndex({ fieldName: field, unique: true }, err => {
                 if (err) return reject(err)
                 resolve()
             })
