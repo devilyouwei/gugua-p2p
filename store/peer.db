@@ -1,3 +1,2 @@
-{"id":"Qmdx4ZfpnXxdNR9tK5vc9J3uMAiS9ydtNXXqdEj3pyDiv6","address":"/ip4/192.168.2.150/tcp/6666","token":"2ccfa855d9b7b6958c7b753086c78796","alive":10,"time":1617347848098,"_id":"QCMSx8PCA6uMzXlm"}
-{"$$indexCreated":{"fieldName":"token","unique":true,"sparse":false}}
-{"id":"Qmdx4ZfpnXxdNR9tK5vc9J3uMAiS9ydtNXXqdEj3pyDiv6","address":"/ip4/192.168.2.150/tcp/6666","token":"2ccfa855d9b7b6958c7b753086c78796","alive":10,"time":1617347893202,"_id":"QCMSx8PCA6uMzXlm"}
+{"$$indexCreated":{"fieldName":"token","unique":true}}
+{"id":"QmR9beC2Wm4ZcU4MLXBZGKMA3FLKah11aCukvRA3ZoomET","address":"/ip4/192.168.2.150/tcp/6666","token":"2ccfa855d9b7b6958c7b753086c78796","alive":10,"time":1617350805772,"_id":"SGhcyRlxZ2NcjxIL"}

@@ -43,7 +43,6 @@ export default class P2P {
     async startServer(port = 0): Promise<P2P> {
         this.port = port
         const peerid = await this.getKey()
-        console.log(peerid)
         // create peer
         this.node = await Libp2p.create({
             peerId: peerid,
