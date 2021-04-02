@@ -13,8 +13,9 @@ import md5 from 'md5'
 import pipe from 'it-pipe'
 import concat from 'it-concat'
 import $ from './Util'
-import { Peer, MessageCallback, Status, Msg, Message } from './DataType'
+import { Peer, PeerKey, MessageCallback, Status, Msg, Message } from './DataType'
 import DB from '../DB'
+import PeerId from 'peer-id'
 
 // p2p util class
 export default class P2P {
@@ -23,12 +24,29 @@ export default class P2P {
     private interval: NodeJS.Timeout
     private port: number
     private myPeer: Peer[] = []
-    constructor(port = 0) {
+    constructor() {
         this.db = new DB(`${root}/store/${config.DB}`)
-        this.port = port
     }
-    async startServer(): Promise<P2P> {
+    async getKey(): Promise<PeerId> {
+        const keydb = new DB(`${root}/store/${config.KEY}`)
+        const keys = await keydb.find()
+        let key: PeerKey
+        if (keys.length) key = keys[0]
+        else {
+            // generate a new key
+            key = (await PeerId.create({ bits: 1024, keyType: 'RSA' })).toJSON() as PeerKey
+            keydb.unique('id')
+            await keydb.updateInsert({ id: key.id }, key) // save to local key.db
+        }
+        return PeerId.createFromJSON(key)
+    }
+    async startServer(port = 0): Promise<P2P> {
+        this.port = port
+        const peerid = await this.getKey()
+        console.log(peerid)
+        // create peer
         this.node = await Libp2p.create({
+            peerId: peerid,
             addresses: {
                 listen: [`/ip4/0.0.0.0/tcp/${this.port}`]
             },
@@ -38,6 +56,7 @@ export default class P2P {
                 streamMuxer: [MPLEX]
             }
         })
+        // start peer
         await this.node.start()
         for (const item of this.node.multiaddrs) {
             // save my peer
@@ -52,20 +71,31 @@ export default class P2P {
         // save my peer to database
         this.setPeer(this.myPeer)
         // listen other peer heart
-        this.startBeat()
-        this.heartListen()
+        this.startBeat(config.HEART)
+        this.listenBeat()
         return this
     }
     stopServer() {
         this.stopBeat()
         this.node.stop()
     }
-    startBeat() {
-        if (this.interval) return
-        this.interval = setInterval(() => {
-            this.heartBeat()
-        }, config.HEART)
-        this.heartBeat()
+    startBeat(interval = 0) {
+        // heart beat data
+        const msg = {
+            status: Status.HEART,
+            msg: Msg.HEART,
+            data: this.myPeer
+        }
+        // beat only once
+        if (interval === 0) this.send('/heart', msg)
+        // beat as interval
+        else {
+            if (this.interval) clearInterval(this.interval) // it is beating? clear!
+            this.send('/heart', msg)
+            this.interval = setInterval(() => {
+                this.send('/heart', msg)
+            }, interval)
+        }
     }
     stopBeat() {
         if (this.interval) clearInterval(this.interval)
@@ -95,16 +125,7 @@ export default class P2P {
         for (const item of myaddr) if (item.toString() === addr) return true
         return false
     }
-    // send heart messages to P2P network
-    private heartBeat(): void {
-        const msg = {
-            status: Status.HEART,
-            msg: Msg.HEART,
-            data: this.myPeer
-        }
-        this.send('/heart', msg)
-    }
-    private heartListen(): void {
+    private listenBeat(): void {
         this.handle('/heart', msg => {
             this.setPeer(msg.data as Peer[])
         })

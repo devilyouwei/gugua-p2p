@@ -3,7 +3,7 @@ import rd from 'readline'
 import { Status, Msg } from './p2p/DataType'
 // use libp2p
 async function main() {
-    const node = await new P2P(6666).startServer()
+    const node = await new P2P().startServer(6666)
     node.checkServer()
     node.handle('/message', res => {
         console.log(res.data)

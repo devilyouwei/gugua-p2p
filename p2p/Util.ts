@@ -8,7 +8,7 @@ export default {
                 if (err) reject(err)
                 if (!list.length) reject('Network Error')
                 for (const item of list) {
-                    if (item.name && item.ip_address && item.netmask) {
+                    if (item.name && item.ip_address && item.netmask && item.mac) {
                         const network: Network = {
                             name: item.name,
                             ip: item.ip_address,

@@ -22,6 +22,12 @@ export interface Peer {
     time: number
     alive: number
 }
+export interface PeerKey {
+    readonly id: string
+    readonly privKey: string
+    readonly pubKey: string
+    readonly time: number
+}
 // The standard data structure to exchange message between the P2P nodes
 export interface Message {
     readonly status: number
