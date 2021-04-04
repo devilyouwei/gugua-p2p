@@ -25,6 +25,12 @@ The social information of users is recorded in the way of blockchain accounting.
 7. Buy and sell NFT post: text, video, voice
 8. Transaction in crypto currency
 
+## The Blueprint of GuGua
+
+Let's see what is GuGua Network through the following figure.
+
+![network](./images/gugua-diagram.png)
+
 ## My BlockChain Journey
 
 This section record something about my studying blockchain, I will used TypeScript to develop GuGua.
@@ -33,8 +39,8 @@ Day 1: I set up the node and TypeScript environment.
 
 Day 2: I tested a simple blockchain example: block and chain.
 
-_From now on..., I will also put this section in blockchain to record my daily work on this project, refer to
-`blockchain/record.ts`._
+From now on..., I will also put this section in blockchain to record my daily work on this project, refer to
+`blockchain/record.ts`.
 
 ## Update Logs
 
