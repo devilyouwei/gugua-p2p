@@ -16,6 +16,7 @@ import $ from './Util'
 import { Peer, PeerKey, MessageCallback, Status, Msg, Message } from './DataType'
 import DB from '../DB'
 import PeerId from 'peer-id'
+import { Validator } from './Validator'
 
 // p2p util class
 export default class P2P {
@@ -125,15 +126,17 @@ export default class P2P {
         return false
     }
     private listenBeat(): void {
-        this.handle('/heart', msg => {
-            this.setPeer(msg.data as Peer[])
+        this.handle('/heart', res => {
+            const valid = new Validator().validHeart(res)
+            if (valid) this.setPeer(res.data as Peer[])
+            else throw new Error('validate error: /heart')
         })
     }
     // handle message of an action
     handle(action: string, callback: MessageCallback): void {
         this.node.handle(action, async ({ stream }) => {
-            const msg = await pipe(stream, concat)
-            const str = Buffer.from(msg.toString(), 'base64').toString('utf8')
+            const res = await pipe(stream, concat)
+            const str = Buffer.from(res.toString(), 'base64').toString('utf8')
             callback($.msgParse(str))
         })
     }

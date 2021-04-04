@@ -1,2 +1,2 @@
-{"$$indexCreated":{"fieldName":"token","unique":true}}
 {"id":"QmR9beC2Wm4ZcU4MLXBZGKMA3FLKah11aCukvRA3ZoomET","address":"/ip4/192.168.2.150/tcp/6666","token":"2ccfa855d9b7b6958c7b753086c78796","alive":10,"time":1617350805772,"_id":"SGhcyRlxZ2NcjxIL"}
+{"$$indexCreated":{"fieldName":"token","unique":true,"sparse":false}}
