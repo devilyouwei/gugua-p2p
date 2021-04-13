@@ -4,6 +4,26 @@
 
 GuGua is a decentralized social network just like Twitter, based on blockchain.
 
+## Gugua P2P
+
+This repo is the server side of **GuGua Network**, another word it will create a peer of P2P network.
+
+-   A peer can handle all the client side request, processing data, response.
+
+-   A peer can connect and sync with other peers in the P2P network.
+
+-   A peer should keep blockchain working properly and stable in the background.
+
+-   Only on the server side, you can do the mining work (POS or POW).
+
+## Client Side
+
+Server side doesn't contain a user interface.
+
+GuGua Network uses the mode of "front-back separation".
+
+For the client side of GuGua, please refer to another repo: [gugua-cli](https://github.com/devilyouwei/gugua-cli)
+
 ## What is DeSN?
 
 **DeSN** is "Decentralized Social Network" which gives up the central server to store and handle users' social

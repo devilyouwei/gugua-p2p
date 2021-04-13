@@ -13,37 +13,48 @@ import md5 from 'md5'
 import pipe from 'it-pipe'
 import concat from 'it-concat'
 import $ from './Util'
-import { Peer, PeerKey, MessageCallback, Status, Msg, Message } from './DataType'
+import { Peer, MessageCallback, Status, Message } from './DataType'
 import DB from '../DB'
 import PeerId from 'peer-id'
+import crpt from 'libp2p-crypto'
 import { Validator } from './Validator'
 
 // p2p util class
 export default class P2P {
     private node: Libp2p
     private db: DB
+    private username: string
+    private password: string
     private interval: NodeJS.Timeout
     private port: number
     private myPeer: Peer[] = []
-    constructor() {
-        this.db = new DB(`${root}/store/${config.DB}`)
+    constructor(username: string, password: string) {
+        this.db = new DB(`${root}/store/${config.PEER_DB}`)
+        this.username = username
+        this.password = password
     }
-    async getKey(): Promise<PeerId> {
-        const keydb = new DB(`${root}/store/${config.KEY}`)
+    async login(): Promise<PeerId> {
+        const keydb = new DB(`${root}/store/${config.KEY_DB}`)
         const keys = await keydb.find()
-        let key: PeerKey
+        let key: PeerId.JSONPeerId
         if (keys.length) key = keys[0]
         else {
-            // generate a new key
-            key = (await PeerId.create({ bits: 1024, keyType: 'RSA' })).toJSON() as PeerKey
-            keydb.unique('id')
-            await keydb.updateInsert({ id: key.id }, key) // save to local key.db
+            const seed = new Uint8Array(Buffer.from(this.username + this.password, 'utf8'))
+            let privKey = await crpt.keys.generateKeyPair('Ed25519', 1024)
+            const peerid1 = await PeerId.createFromPrivKey(privKey.bytes)
+            console.log('p1', peerid1.toJSON())
+            const exp = await privKey.export('123')
+            console.log('exp', exp)
+            privKey = await crpt.keys.import(exp, '123')
+            const peerid = await PeerId.createFromPrivKey(privKey.bytes)
+            key = peerid.toJSON()
+            console.log('p2', key)
         }
         return PeerId.createFromJSON(key)
     }
     async startServer(port = 0): Promise<P2P> {
         this.port = port
-        const peerid = await this.getKey()
+        const peerid = await this.login()
         // create peer
         this.node = await Libp2p.create({
             peerId: peerid,
@@ -82,8 +93,8 @@ export default class P2P {
     startBeat(interval = 0) {
         // heart beat data
         const msg = {
-            status: Status.HEART,
-            msg: Msg.HEART,
+            status: Status.SUCCESS,
+            msg: 'heart beat',
             data: this.myPeer
         }
         // beat only once
@@ -128,7 +139,7 @@ export default class P2P {
     private listenBeat(): void {
         this.handle('/heart', res => {
             const valid = new Validator().validHeart(res)
-            if (valid) this.setPeer(res.data as Peer[])
+            if (valid && res.status === Status.SUCCESS) this.setPeer(res.data as Peer[])
             else throw new Error('validate error: /heart')
         })
     }

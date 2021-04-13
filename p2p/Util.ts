@@ -1,5 +1,5 @@
 import network from 'network'
-import { Message, Network, Status, Msg } from './DataType'
+import { Message, Network, Status } from './DataType'
 
 export default {
     network(): Promise<Network> {
@@ -28,7 +28,7 @@ export default {
         try {
             return JSON.parse(msg) as Message
         } catch (e) {
-            return { status: Status.ERROR, msg: Msg.ERROR, data: null }
+            return { status: Status.ERROR, msg: 'parse message error', data: null }
         }
     },
     // message to string
@@ -36,7 +36,7 @@ export default {
         try {
             return JSON.stringify(msg)
         } catch (e) {
-            return `{ status: ${Status.ERROR}, msg: ${Msg.ERROR}, data: ${null} }`
+            return `{ status: ${Status.ERROR}, msg: 'stringify message error', data: ${null} }`
         }
     }
 }

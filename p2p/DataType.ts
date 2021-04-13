@@ -23,10 +23,10 @@ export interface Peer {
     alive: number
 }
 export interface PeerKey {
-    readonly id: string
-    readonly privKey: string
-    readonly pubKey: string
-    readonly time: number
+    id: string
+    privKey: string
+    pubKey: string
+    time: number
 }
 // The standard data structure to exchange message between the P2P nodes
 export interface Message {
@@ -41,12 +41,5 @@ export interface MessageCallback {
 // The standard status enums for Message interface
 export enum Status {
     ERROR = 0,
-    HEART = 1,
-    MSG = 2
-}
-// The standard msg enums for Message interface
-export enum Msg {
-    ERROR = 'Something is Error',
-    HEART = 'Heart Beat Alive',
-    MSG = 'Messages'
+    SUCCESS = 1
 }
