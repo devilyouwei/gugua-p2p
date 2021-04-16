@@ -1,5 +1,5 @@
-import Chain from './test/Chain'
-import Block from './test/Block'
+import Chain from './blockchain/Chain'
+import Block from './blockchain/Block'
 import fs from 'fs'
 import readline from 'readline'
 import root from 'app-root-path'
