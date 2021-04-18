@@ -2,7 +2,7 @@
 
 ![logo](./logo.jpg)
 
-GuGua is a decentralized social network just like Twitter, based on blockchain.
+GuGua is a decentralized social network just like Twitter but based on blockchain and decentralized.
 
 ## Gugua P2P
 
@@ -12,7 +12,7 @@ This repo is the server side of **GuGua Network**, another word it will create a
 
 -   A peer can connect and sync with other peers in the P2P network.
 
--   A peer should keep blockchain working properly and stable in the background.
+-   A peer should keep blockchain working properly and stable.
 
 -   Only on the server side, you can do the mining work (POS or POW).
 
@@ -51,23 +51,31 @@ Let's see what is GuGua Network through the following figure.
 
 ![network](./images/gugua-diagram.png)
 
-## My BlockChain Journey
+## Get Started
 
-This section record something about my studying blockchain, I will used TypeScript to develop GuGua.
+```bash
+# install libs
+yarn install
 
-Day 1: I set up the node and TypeScript environment.
+# run development env
+yarn run dev
 
-Day 2: I tested a simple blockchain example: block and chain.
+# build this project
+yarn run build
+```
 
-From now on..., I will also put this section in blockchain to record my daily work on this project, refer to
-`blockchain/record.ts`.
+Enter `http://localhost:3000` in browser to check if the local server runs well.
 
 ## Update Logs
 
-[2021/3/30] Implement a P2P network which can sync the peer list
+[2021/3/30] Implement a P2P network which can sync the peer list.
+
+[2021/4/16] Add local http server by using express.
 
 ## Contributors
 
 **devilyouwei** joined on Mar 5, 2021
 
-We are looing forward to your attention and join.
+We are looing forward to your join.
+
+Let's create a totally decentralized social network!
