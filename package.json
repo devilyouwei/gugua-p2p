@@ -38,8 +38,10 @@
         "proseWrap": "always"
     },
     "dependencies": {
+        "@types/express-form-data": "^2.0.1",
         "app-root-path": "^3.0.0",
         "express": "^4.17.1",
+        "express-form-data": "^2.0.16",
         "it-concat": "^1.0.3",
         "it-pipe": "^1.1.0",
         "libp2p": "^0.30.11",
@@ -50,8 +52,11 @@
         "md5": "^2.3.0",
         "nedb": "^1.8.0",
         "network": "^0.5.0",
-        "os": "^0.1.1",
         "peer-id": "^0.14.4",
+        "sha256": "^0.2.0",
+        "sqlite": "^4.0.21",
+        "sqlite3": "^5.0.2",
+        "typeorm": "^0.2.32",
         "z-schema": "^5.0.0"
     },
     "devDependencies": {
@@ -60,6 +65,7 @@
         "@types/md5": "^2.3.0",
         "@types/nedb": "^1.8.11",
         "@types/node": "^14.14.35",
+        "@types/sha256": "^0.2.0",
         "@typescript-eslint/eslint-plugin": "^4.18.0",
         "@typescript-eslint/parser": "^4.18.0",
         "eslint": "^7.22.0",

@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
         "target": "esnext",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "module": "commonjs",
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,

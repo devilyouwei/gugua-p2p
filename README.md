@@ -1,6 +1,6 @@
 # GuGua
 
-![logo](./logo.jpg)
+![logo](./readme/logo.png)
 
 GuGua is a decentralized social network just like Twitter but based on blockchain and decentralized.
 
@@ -49,7 +49,7 @@ The social information of users is recorded in the way of blockchain accounting.
 
 Let's see what is GuGua Network through the following figure.
 
-![network](./images/gugua-diagram.png)
+![network](./readme/gugua-diagram.png)
 
 ## Get Started
 

@@ -4,7 +4,7 @@ export interface Network {
     readonly name: string
     readonly ip: string
     readonly mac: string
-    readonly gateway: string
+    //readonly gateway: string
     readonly netmask: string
     readonly type: string
 }
@@ -32,9 +32,9 @@ export interface PeerKey {
 export interface Message {
     readonly status: number
     readonly msg: string
-    readonly data: object
+    readonly data: any
 }
-// 这里可以直接规范一个方法
+// 规范网络交换的callback
 export interface MessageCallback {
     (msg: Message): void
 }
