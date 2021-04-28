@@ -1,5 +1,6 @@
 import { Message, Network, Status } from './type/DataType'
 import { networkInterfaces } from 'os'
+import config from './config/web.config'
 
 export default class Util {
     // get local network info
@@ -35,5 +36,8 @@ export default class Util {
         } catch (e) {
             return `{ status: ${Status.ERROR}, msg: 'stringify message error', data: ${null} }`
         }
+    }
+    static log(...data: any[]): void {
+        if (config.logging) console.log(...data)
     }
 }

@@ -10,9 +10,14 @@ export default class DB {
         config.entities = (() => Object.values(entities))() // import all the entities in Entity.ts
         return (this.db = await createConnection(config as ConnectionOptions))
     }
-    // choose table and get repository
-    static t<T>(target: EntityTarget<T>): Repository<T> {
-        if (!this.db) throw new Error('Database is not connected, excute connect() first')
+    // close connect
+    static async close(): Promise<void> {
+        return this.db.close()
+    }
+    // choose a table and get repository
+    static async t<T>(target: EntityTarget<T>): Promise<Repository<T>> {
+        // If disconnected, force to connect
+        if (!this.db || !this.db.isConnected) await this.connect()
         return this.db.getRepository(target)
     }
 }

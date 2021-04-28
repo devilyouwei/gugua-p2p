@@ -1,52 +1,32 @@
 // put all the entities here
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm'
-import sha256 from 'sha256'
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, Index } from 'typeorm'
 // block of user header
 @Entity('BLOCK_USER_HEADER')
 export class User {
-    constructor(preHash: string, registers: UserRegister[] = []) {
-        this.preHash = preHash // the previous block hash
-        this.time = new Date().getTime()
-        this.version = '1'
-        this.difficulty = 1
-        this.registers = registers
-        this.hash = sha256(
-            this.id.toString() +
-                this.version +
-                this.preHash +
-                this.merkle +
-                this.time +
-                this.nonce +
-                this.difficulty.toString() +
-                this.registers.toString()
-        )
-    }
     @PrimaryGeneratedColumn()
     id: number
     @Column()
     version: string
-    @Column()
+    @Column({ unique: true })
     preHash: string
     @Column()
-    hash: string
+    difficulty: number
     @Column()
-    merkle: string
+    nonce: number
     @Column()
     time: number
     @Column()
-    nonce: string
-    @Column()
-    difficulty: number
+    merkle: string
     // transaction info is user's public key
-    @OneToMany(() => UserRegister, userRegister => userRegister.user)
+    @OneToMany(() => UserRegister, register => register.user)
     registers: UserRegister[]
+    @Column()
+    @Index({ unique: true })
+    hash: string
 }
 // block of user content
 @Entity('BLOCK_USER_CONTENT')
 export class UserRegister {
-    constructor(pubKey: string) {
-        this.pubKey = pubKey
-    }
     @PrimaryGeneratedColumn()
     id: number
     @Column()
