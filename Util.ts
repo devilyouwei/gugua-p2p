@@ -1,6 +1,7 @@
 import { Message, Network, Status } from './type/DataType'
 import { networkInterfaces } from 'os'
 import config from './config/web.config'
+import BN from 'bn.js'
 
 export default class Util {
     // get local network info
@@ -39,5 +40,18 @@ export default class Util {
     }
     static log(...data: any[]): void {
         if (config.logging) console.log(...data)
+    }
+    // get a big number from HEX/16 rad
+    static BN16(num: string | number): BN {
+        if (typeof num == 'string') {
+            // string type
+            // prefix is '0x'
+            if (num.indexOf('x') !== -1) return new BN(num.split('x')[1], 16)
+            else return new BN(num, 16)
+        } else return new BN(num, 16)
+    }
+    // get a big number from 10 rad
+    static BN10(num: number | string): BN {
+        return new BN(num, 10)
     }
 }

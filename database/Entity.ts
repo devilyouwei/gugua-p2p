@@ -10,7 +10,7 @@ export class User {
     @Column({ unique: true })
     preHash: string
     @Column()
-    target: string // should be transformed to a bigint type
+    target: string // HEX string, should be transformed to bigint type
     @Column()
     nonce: number
     @Column()

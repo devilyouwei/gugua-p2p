@@ -3,8 +3,11 @@ import sha256 from 'sha256'
 import { User, UserRegister } from '../database/Entity'
 import config from '../config/web.config'
 import $ from '../Util'
+import BN from 'bn.js'
+import { parse } from 'express-form-data'
 export default class Block {
     static stop = false
+    // get all the blocks
     static async getAll(): Promise<User[]> {
         const repo = await db.t(User)
         return repo.find()
@@ -18,8 +21,9 @@ export default class Block {
     // check if nonce is right
     static checkNonce(nonce: number, preBlock: User): boolean {
         const hash = sha256(preBlock.hash + nonce)
-        $.log('[Check Nonce]', hash)
-        return BigInt(hash) <= BigInt(preBlock.target)
+        const flag = $.BN16(hash).lte($.BN16(preBlock.target))
+        $.log('[Check Nonce]', flag)
+        return flag
     }
     // count blocks
     static async count(): Promise<number> {
@@ -36,42 +40,44 @@ export default class Block {
             // genesis block
             user.preHash = sha256(config.GENESIS_MSG)
             user.merkle = ''
+            user.id = 1
         } else {
+            // next block
             user.preHash = preBlock.hash
             user.merkle = ''
+            user.id = preBlock.id + 1
         }
-        user.target = (await this.getTarget()).toString()
+        user.target = await this.getTarget() // set next target
         user.registers = registers
         user.nonce = nonce
-        // hash exclude id
         user.hash = this.hash(user)
-        const repo = await db.t(User)
-        $.log('[Add Result]', `hash:${user.hash} nonce:${nonce}`)
+        const repo = await db.t(User) // save to database
+        $.log('[Add Block]', `Hash: ${user.hash} nonce: ${nonce}`)
         return repo.save(user)
     }
-    // to balance difficulty, get a new target
-    static async getTarget(): Promise<BigInt> {
+    // to balance difficulty, get a new target, return hex string
+    static async getTarget(): Promise<string> {
         const repo = await db.t(User)
         const data = await repo.find({
             order: {
                 time: 'DESC'
             },
             select: ['id', 'time', 'target'],
-            take: config.DIFFICAULTY_SKIP
+            take: config.TARGET_SKIP
         })
-        if (data.length < config.DIFFICAULTY_SKIP) return BigInt(config.GENESIS_DIFFICAULTY)
-        const target = BigInt(data[0].target)
-        return target
-        /*
-        const expectedTime = config.DIFFICAULTY_TIME * 1000 * data.length
+        if (data.length < config.TARGET_SKIP) return config.GENESIS_TARGET
+        // transform hex string to int, calculte a new target
+        let target = $.BN16(data[0].target)
+        const expectedTime = config.TARGET_TIME * 1000 * data.length
         const realTime = data[0].time - data[data.length - 1].time
-        target *= realTime / expectedTime
-        console.log(target)
-        */
+        $.log('[Target Deviation]', realTime / expectedTime)
+        target = target.muln(realTime / expectedTime)
+        return `0x${target.toString(16, 64)}`
     }
     // get current block hash
     static hash(user: User): string {
         const userText =
+            user.id.toString() +
             user.preHash.toString() +
             user.target.toString() +
             user.nonce.toString() +
@@ -79,7 +85,6 @@ export default class Block {
             user.time.toString() +
             user.merkle.toString() +
             user.version.toString()
-        $.log(userText)
         return sha256(userText)
     }
     // get the latestBlock
@@ -105,7 +110,7 @@ export default class Block {
             user.id = 0
             user.hash = sha256(config.GENESIS_MSG)
             user.time = 0
-            user.target = config.GENESIS_DIFFICAULTY
+            user.target = config.GENESIS_TARGET
         } else {
             // the previous block
             user = await repo.findOne(block.id - 1)
@@ -114,34 +119,34 @@ export default class Block {
     }
     // mine, proof of work
     static async mine(preBlock: User = null): Promise<number> {
-        let target: BigInt
+        let target: BN
         let preHash: string
         let blockId: number
         if (!preBlock) {
             // the genesis block
             blockId = 1
             preHash = sha256(config.GENESIS_MSG)
-            target = BigInt(config.GENESIS_DIFFICAULTY)
-            $.log('[Genesis Block]', `GenesisMsg:${config.GENESIS_MSG} Nonce:0`)
+            target = $.BN16(config.GENESIS_TARGET)
+            $.log('[Genesis Block]', `GenesisMsg: ${config.GENESIS_MSG}`)
         } else {
             // the next block
             blockId = preBlock.id + 1
             preHash = preBlock.hash
-            target = BigInt(preBlock.target)
-            $.log('[Previous Block]', `hash:${preBlock.hash} nonce:${preBlock.nonce}`)
+            target = $.BN16(preBlock.target)
+            $.log('[Previous Block]', `PreHash: ${preBlock.hash}`)
         }
         let nonce = 0
-        let hash: BigInt
-        $.log('[Mining...]', `Id:${blockId} Target:${target}`)
+        let hash: BN
+        $.log('[Mining...]', `Id: ${blockId} Target: 0x${target.toString(16, 64)}`)
         const starttime = new Date().getTime()
         while (!this.stop) {
-            hash = BigInt(sha256(preHash + nonce))
-            if (hash <= target) break
+            hash = $.BN16(sha256(preHash + nonce))
+            if (hash.lte(target)) break
             nonce++
         }
         const endtime = new Date().getTime()
-        const cost = (endtime - starttime / 60 / 1000).toFixed(2)
-        $.log('[Mine Result]', `Hash:${hash} Nonce:${nonce} TimeCost:${cost}`)
+        const cost = ((endtime - starttime) / 60 / 1000).toFixed(2)
+        $.log('[Mine Result]', `Nonce: ${nonce} TimeCost: ${cost}mins`)
         return nonce
     }
 }
