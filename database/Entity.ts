@@ -10,7 +10,7 @@ export class User {
     @Column({ unique: true })
     preHash: string
     @Column()
-    difficulty: number
+    target: string // should be transformed to a bigint type
     @Column()
     nonce: number
     @Column()
