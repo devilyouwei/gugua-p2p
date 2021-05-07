@@ -70,8 +70,12 @@ export default class Block {
         let target = $.BN16(data[0].target)
         const expectedTime = config.TARGET_TIME * 1000 * data.length
         const realTime = data[0].time - data[data.length - 1].time
-        $.log('[Target Deviation]', realTime / expectedTime)
-        target = target.muln(realTime / expectedTime)
+        let deviation = realTime / expectedTime
+        $.log('[Target Deviation]', deviation)
+        deviation = deviation > 2 ? 2 : deviation
+        deviation = deviation < 1 / 2 ? 1 / 2 : deviation
+        $.log('[Target Deviation]', deviation)
+        target = target.muln(deviation)
         return `0x${target.toString(16, 64)}`
     }
     // get current block hash

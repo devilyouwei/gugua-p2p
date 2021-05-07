@@ -1,10 +1,10 @@
 // put all the entities here
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, Index } from 'typeorm'
+import { Entity, Column, PrimaryColumn, OneToMany, ManyToOne, Index } from 'typeorm'
 // block of user header
 @Entity('BLOCK_USER_HEADER')
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn()
+    id: number // id actually is the height of a block
     @Column()
     version: string
     @Column({ unique: true })
@@ -27,9 +27,7 @@ export class User {
 // block of user content
 @Entity('BLOCK_USER_CONTENT')
 export class UserRegister {
-    @PrimaryGeneratedColumn()
-    id: number
-    @Column()
+    @PrimaryColumn()
     pubKey: string
     @ManyToOne(() => User, user => user.registers)
     user: User
