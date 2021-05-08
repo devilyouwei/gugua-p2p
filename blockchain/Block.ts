@@ -1,10 +1,9 @@
 import db from '../database/DB'
 import sha256 from 'sha256'
 import { User, UserRegister } from '../database/Entity'
-import config from '../config/web.config'
+import config from '../config/genesis.config'
 import $ from '../Util'
 import BN from 'bn.js'
-import { parse } from 'express-form-data'
 export default class Block {
     static stop = false
     // get all the blocks
@@ -20,9 +19,9 @@ export default class Block {
     }
     // check if nonce is right
     static checkNonce(nonce: number, preBlock: User): boolean {
-        const hash = sha256(preBlock.hash + nonce)
-        const flag = $.BN16(hash).lte($.BN16(preBlock.target))
-        $.log('[Check Nonce]', flag)
+        const hash = $.BN16(sha256(preBlock.hash + nonce))
+        const flag = hash.lte($.BN16(preBlock.target))
+        $.log('[Check Nonce]', hash.toString(16, 64))
         return flag
     }
     // count blocks
@@ -38,7 +37,7 @@ export default class Block {
         user.time = new Date().getTime()
         if (!preBlock) {
             // genesis block
-            user.preHash = sha256(config.GENESIS_MSG)
+            user.preHash = sha256(config.BLOCK_USER.MSG)
             user.merkle = ''
             user.id = 1
         } else {
@@ -63,12 +62,12 @@ export default class Block {
                 time: 'DESC'
             },
             select: ['id', 'time', 'target'],
-            take: config.TARGET_SKIP
+            take: config.BLOCK_USER.INTERVAL
         })
-        if (data.length < config.TARGET_SKIP) return config.GENESIS_TARGET
+        if (data.length < config.BLOCK_USER.INTERVAL) return config.BLOCK_USER.TARGET
         // transform hex string to int, calculte a new target
         let target = $.BN16(data[0].target)
-        const expectedTime = config.TARGET_TIME * 1000 * data.length
+        const expectedTime = config.BLOCK_USER.TIME * 1000 * data.length
         const realTime = data[0].time - data[data.length - 1].time
         let deviation = realTime / expectedTime
         $.log('[Target Deviation]', deviation)
@@ -112,9 +111,9 @@ export default class Block {
         if (!block || !(block.id - 1)) {
             // the genesis block
             user.id = 0
-            user.hash = sha256(config.GENESIS_MSG)
+            user.hash = sha256(config.BLOCK_USER.MSG)
             user.time = 0
-            user.target = config.GENESIS_TARGET
+            user.target = config.BLOCK_USER.TARGET
         } else {
             // the previous block
             user = await repo.findOne(block.id - 1)
@@ -129,9 +128,9 @@ export default class Block {
         if (!preBlock) {
             // the genesis block
             blockId = 1
-            preHash = sha256(config.GENESIS_MSG)
-            target = $.BN16(config.GENESIS_TARGET)
-            $.log('[Genesis Block]', `GenesisMsg: ${config.GENESIS_MSG}`)
+            preHash = sha256(config.BLOCK_USER.MSG)
+            target = $.BN16(config.BLOCK_USER.TARGET)
+            $.log('[Genesis Block]', `GenesisMsg: ${config.BLOCK_USER.MSG}`)
         } else {
             // the next block
             blockId = preBlock.id + 1
